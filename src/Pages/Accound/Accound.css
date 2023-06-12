@@ -1,0 +1,264 @@
+.account-wrapper{
+    max-width: 1300px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 50px;
+
+}
+
+.avatar-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.add-vacation{
+    margin-top: 21px;
+    height: 35px;
+    background-color: black;
+    border-radius: 15px;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: white;
+    font-weight: 400;
+    cursor: pointer;
+    transition: 0.3s all;
+}
+
+ .add-vacation-active{
+     background-color: #F52D30;
+     margin-top: 21px;
+     height: 35px;
+     border-radius: 15px;
+     border: none;
+     font-family: 'Inter', sans-serif;
+     font-size: 14px;
+     color: white;
+     font-weight: 400;
+     cursor: pointer;
+
+     transition: 0.3s all;
+
+ }
+
+.user-info-container{
+    max-width: 750px;
+    width: 100%;
+    box-shadow: 0px 8px 24px rgba(129, 135, 189, 0.15);
+    border-radius: 5px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+.user-info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.user-avatar{
+    max-width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.avatar{
+    display: flex;
+    flex-direction: column;
+}
+
+.avatar button{
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    width: 60px;
+}
+
+.save-avatar{
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    cursor: pointer;
+    width: 60px;
+}
+
+.info-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.input-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 30px;
+    row-gap: 10px;
+    max-width: 720px;
+    width: 100%;
+}
+
+.input-container label{
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.user-vacations{
+    max-width: 380px;
+    max-height: 500px;
+    width: 100%;
+    box-shadow: 0px 8px 24px rgba(129, 135, 189, 0.15);
+    border-radius: 5px;
+    padding: 30px;
+}
+
+
+/*Настройки учетной записи*/
+
+.title-info{
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.67);
+    margin-bottom: 20px;
+}
+
+.input-container label{
+    font-size: 14px;
+}
+
+.input-container input{
+    width: 210px;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.67);
+    padding-left: 15px;
+    margin-top: 5px;
+
+    font-size: 15px;
+}
+
+.input-container input:focus{
+    border: 1px solid #F52D30;
+    outline: none;
+}
+
+.input-container input:disabled{
+    border: 1px solid #F52D30;
+    outline: none;
+}
+
+.input-container button {
+    height: 35px;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 3px 20px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    width: 150px;
+
+    margin-top: 10px;
+
+    font-size: 14px;
+}
+
+
+.new-summary{
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+}
+
+.new-summary button{
+    width: 200px;
+    margin-top: 40px;
+    background-color: #F52D30;
+    height: 35px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #ffffff;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+}
+
+.first-container-summary{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 30px;
+    row-gap: 10px;
+}
+
+.first-container-summary label{
+    display: flex;
+    flex-direction: column;
+}
+
+.first-container-summary input{
+    width: 210px;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.67);
+    padding-left: 15px;
+    margin-top: 5px;
+
+    font-size: 15px;
+
+}
+
+.first-container-summary input:focus{
+    border: 1px solid #F52D30;
+    outline: none;
+}
+
+.first-container-summary input:disabled{
+    border: 1px solid #F52D30;
+    outline: none;
+}
+
+.second-container-summary{
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+.second-container-summary label{
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+.second-container-summary textarea{
+    height: 100px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.67);
+    padding-left: 15px;
+    padding-top: 15px;
+    margin-top: 5px;
+
+    resize: none;
+
+    font-size: 15px;
+}
+
+.second-container-summary textarea:focus{
+    border: 1px solid #F52D30;
+    outline: none;
+}
+
+
