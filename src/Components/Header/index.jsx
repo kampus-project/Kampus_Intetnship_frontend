@@ -12,8 +12,9 @@ function Header() {
 
     const [isOpen, setIsOpen] = useState(false);
     const [jwt, setJwt] = useLocalState('', 'jwt')
-    const [role,setRole] = useLocalState('defaultUser','role')
-    console.log(role)
+    const [role,setRole] = useLocalState('','role')
+    const [username,setUsername] = useLocalState('','username')
+
 
     const StyledBadge = styled(Badge)(() => ({
         '& .MuiBadge-badge': {
@@ -55,13 +56,13 @@ function Header() {
                     </div>
                     <div className="dropdown">
                         <button onClick={toggleDropdown} className="dropdown-toggle">
-                            Имя пользователя
+                            {username}
                         </button>
                         {isOpen && (
                             <div className="dropdown-menu" onClick={() => handleOptionClick()}>
                                 <div onClick={toggleDropdown}>
-                                    {role === 'defaultUser' && <Link className="dropdown-item" to ="/Account">Личный кабинет</Link> }
-                                    {role === 'superUser' && <Link className="dropdown-item" to ="/Account">superuser</Link> }
+                                    {role === 'STUDENT' && <Link className="dropdown-item" to ="/Account">Личный кабинет</Link> }
+                                    {role === 'HR' && <Link className="dropdown-item" to ="/CompanyAccount">Личный кабинет</Link> }
                                     <Link className="dropdown-item" onClick={LogOut}>Выход</Link>
                                 </div>
                             </div>

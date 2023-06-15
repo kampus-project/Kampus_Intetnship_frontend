@@ -6,7 +6,15 @@ import TextField from '@mui/material/TextField';
 import { withStyles } from '@mui/styles';
 import AccountHeader from "../../Components/AccountHeader/index.jsx";
 import {useState} from "react";
+import {Navigate} from "react-router-dom";
+import {useLocalState} from "../../Modules/useLocalStorage/index.js";
 function CompanyAccount() {
+
+    const [jwt, setJwt] = useLocalState('', 'jwt')
+    const [role,setRole] = useLocalState('','role')
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const [username,setUsername] = useLocalState('','username')
+
 
     const RedAutocomplete = withStyles({
         root: {
@@ -28,13 +36,13 @@ function CompanyAccount() {
     })(Autocomplete);
 
     const [formData, setFormData] = useState({
-        jobTitle: '',
-        companyName: '',
-        shortDescription: '',
-        description: '',
-        specialization: [],
-        schedule: [],
-        internshipType: []
+        internshipTitle: '',
+        organizationName: '',
+        internshipShortDescription: '',
+        internshipDescription: '',
+        internshipSpecialization: '',
+        internshipSchedule: '',
+        internshipType: ''
     });
 
     const handleInputChange = (event) => {
@@ -54,20 +62,37 @@ function CompanyAccount() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        fetch(`${backendUrl}/api/v1/internship/createInternshipByUsername/${username}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization" : 'Bearer ' + jwt
+            },
+            method: "post",
+            body: JSON.stringify(formData)
+        })
+            .then((response) => {
+                if (response.status === 200) {
+                    console.log("OK");
+                    return response.blob();
+                } else {
+                    console.log(formData)
+                    return Promise.reject("Ошибка");
+                }
+            })
         // Отправка данных formData на сервер
-        console.log(formData);
         setFormData({
-            jobTitle: '',
-            companyName: '',
-            shortDescription: '',
-            description: '',
-            specialization: [],
-            schedule: [],
-            internshipType: []
+            internshipTitle: '',
+            organizationName: '',
+            internshipShortDescription: '',
+            internshipDescription: '',
+            internshipSpecialization: '',
+            internshipSchedule: '',
+            internshipType: ''
         })
     };
 
-    return (
+    return (role==='STUDENT') ? (<Navigate to='/'/>) : (
         <div>
             <AccountHeader />
             <div className="account-wrapper">
@@ -79,8 +104,8 @@ function CompanyAccount() {
                             <input
                                 className="job-input"
                                 type="text"
-                                name="jobTitle"
-                                value={formData.jobTitle}
+                                name="internshipTitle"
+                                value={formData.internshipTitle}
                                 onChange={handleInputChange}
                                 maxLength={100}
                             />
@@ -90,8 +115,8 @@ function CompanyAccount() {
                             <input
                                 className="job-input"
                                 type="text"
-                                name="companyName"
-                                value={formData.companyName}
+                                name="organizationName"
+                                value={formData.organizationName}
                                 onChange={handleInputChange}
                                 maxLength={100}
                             />
@@ -101,8 +126,8 @@ function CompanyAccount() {
                             <input
                                 className="job-input"
                                 type="text"
-                                name="shortDescription"
-                                value={formData.shortDescription}
+                                name="internshipShortDescription"
+                                value={formData.internshipShortDescription}
                                 onChange={handleInputChange}
                                 maxLength={100}
                             />
@@ -110,20 +135,18 @@ function CompanyAccount() {
                         <label>
                             Описание вакансии
                             <textarea
-                                name="description"
-                                value={formData.description}
+                                name="internshipDescription"
+                                value={formData.internshipDescription}
                                 onChange={handleInputChange}
                             ></textarea>
                         </label>
                         <div className="select-block">
                             <RedAutocomplete
                                 size='small'
-                                multiple
                                 id="tags-standard"
                                 options={specialization}
-                                getOptionLabel={(option) => option.title}
-                                value={formData.specialization}
-                                onChange={(event, value) => handleSelectChange("specialization", value)}
+                                value={formData.internshipSpecialization || null}
+                                onChange={(event, value) => handleSelectChange("internshipSpecialization", value)}
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
@@ -134,12 +157,10 @@ function CompanyAccount() {
                             />
                             <RedAutocomplete
                                 size='small'
-                                multiple
                                 id="tags-standard"
                                 options={schedule}
-                                getOptionLabel={(option) => option.title}
-                                value={formData.schedule}
-                                onChange={(event, value) => handleSelectChange("schedule", value)}
+                                value={formData.internshipSchedule || null}
+                                onChange={(event, value) => handleSelectChange("internshipSchedule", value)}
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
@@ -150,11 +171,9 @@ function CompanyAccount() {
                             />
                             <RedAutocomplete
                                 size='small'
-                                multiple
                                 id="tags-standard"
                                 options={internshipType}
-                                getOptionLabel={(option) => option.title}
-                                value={formData.internshipType}
+                                value={formData.internshipType || null}
                                 onChange={(event, value) => handleSelectChange("internshipType", value)}
                                 renderInput={(params) => (
                                     <TextField
@@ -169,7 +188,7 @@ function CompanyAccount() {
                     </form>
                 </div>
                 <div className="user-vacations-job">
-                    Hello
+                    <div className="job-creation-title">Ваши вакансии</div>
                 </div>
             </div>
         </div>

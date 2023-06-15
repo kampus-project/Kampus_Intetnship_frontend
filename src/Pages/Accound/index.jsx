@@ -1,11 +1,34 @@
 import './Accound.css';
 import AccountHeader from "../../Components/AccountHeader/index.jsx";
 import Avatar from "../../Components/Avatar/index.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {Navigate} from "react-router-dom";
+import {useLocalState} from "../../Modules/useLocalStorage/index.js";
 
 function Account() {
 
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const [role,setRole] = useLocalState('','role')
+    const [jwt, setJwt] = useLocalState('', 'jwt')
+
     const [avatarData, setAvatarData] = useState('');
+    const [username,setUsername] = useLocalState('','username')
+    const [userData,setUserData] = useState([]);
+
+
+    useEffect(() => {
+        fetch(`${backendUrl}/api/v1/student/getStudentByUsername/${username}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization" : 'Bearer ' + jwt,
+            },
+            method: "get",
+        })
+            .then((response) => response.json())
+            .then((data) => setUserData(data))
+            .catch(error => console.error(error));
+    }, [])
+    console.log(userData)
 
     const handleAvatarChange = (data) => {
         setAvatarData(data);
@@ -35,7 +58,7 @@ function Account() {
         setIsEditable(false);
     };
 
-    return (
+    return (role==='HR') ? (<Navigate to='/'/>) : (
         <div>
             <AccountHeader/>
             <div className="account-wrapper">
@@ -55,27 +78,27 @@ function Account() {
                             <form className="input-container">
                                 <label>
                                     Фамилия
-                                    <input type="text" disabled/>
+                                    <input type="text" defaultValue={userData.lastName} disabled/>
                                 </label>
                                 <label>
                                     Имя
-                                    <input type="text" disabled/>
+                                    <input type="text" defaultValue={userData.firstName} disabled/>
                                 </label>
                                 <label>
                                     Отчество
-                                    <input type="text" disabled/>
+                                    <input type="text" defaultValue={userData.middleName} disabled/>
                                 </label>
                                 <label>
                                     Login
-                                    <input type="text" disabled/>
+                                    <input type="text" defaultValue={userData.username} disabled/>
                                 </label>
                                 <label>
                                     Номер телефона
-                                    <input type="text" disabled={!isEditable}/>
+                                    <input type="text" defaultValue={userData.phoneNumber} disabled={!isEditable}/>
                                 </label>
                                 <label>
                                     Почта
-                                    <input type="text" disabled={!isEditable}/>
+                                    <input type="text" defaultValue={userData.email} disabled={!isEditable}/>
                                 </label>
                                 <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
                                     {isEditable === false && <button style={{backgroundColor:"#F52D30"}} onClick={handleChangeEditable}>Редактировать</button>}
@@ -94,41 +117,41 @@ function Account() {
                                 </label>
                                 <label>
                                     Университет
-                                   <input type="text" disabled/>
+                                   <input type="text" defaultValue={userData.universityName} disabled/>
                                 </label>
                                 <label>
                                     Институт
-                                   <input type="text" disabled/>
+                                   <input type="text"  defaultValue={userData.universityName} disabled/>
                                 </label>
                                 <label>
                                     Направление
-                                   <input type="text" disabled/>
+                                   <input type="text"  defaultValue={userData.courseTitle} disabled/>
                                 </label>
                                 <label>
                                     Вид обучения
-                                   <input type="text" disabled/>
+                                   <input type="text" defaultValue={userData.educationForm} disabled/>
                                 </label>
                                 <label>
                                     Форма обучения
-                                   <input type="text" disabled/>
+                                   <input type="text" defaultValue={userData.studyForm} disabled/>
                                 </label>
                                 <label>
                                     Уровень образования
-                                   <input type="text" disabled/>
+                                   <input type="text" defaultValue={userData.typeHighEducation} disabled/>
                                 </label>
                                 <label>
                                     Курс
-                                   <input type="text" disabled/>
+                                   <input type="text" defaultValue={userData.courseNumber} disabled/>
                                 </label>
                                 <label>
                                     Ср.балл
-                                   <input type="text" disabled/>
+                                   <input type="text" defaultValue={userData.averageGrade} disabled/>
                                 </label>
                             </div>
                             <div className="second-container-summary">
                                 <label>
                                     О себе
-                                   <textarea type="text"/>
+                                   <textarea defaultValue={userData.about} type="text"/>
                                 </label>
                                 <label>
                                     Мои навыки

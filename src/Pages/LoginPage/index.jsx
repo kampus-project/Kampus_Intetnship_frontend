@@ -6,11 +6,13 @@ import {useLocalState} from "../../Modules/useLocalStorage/index.js";
 function LoginPage() {
 
     const [password, setPassword] = useState('');
-    const [login, setLogin] = useState('');
+    const [username,setUsername] = useLocalState('','username')
     const [jwt, setJwt] = useLocalState('', 'jwt')
+    const [role,setRole] = useLocalState('','role')
+
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-    const [loginErr, setLoginErr] = useState('')
+    const [usernameErr, setUsernameErr] = useState('')
     const [mainErr, setMainErr] = useState('')
 
     const handleMainSubmit = (event) => {
@@ -18,7 +20,7 @@ function LoginPage() {
 
         // send survey data to server
         const surveyMainData = {
-            login,
+            username,
             password,
         };
         console.log(surveyMainData);
@@ -43,14 +45,16 @@ function LoginPage() {
             })
             .then((response) => {
                 setJwt(response['0']['token']);
+                setRole(response['0']['role']);
+                setUsername(response['0']['username']);
+                console.log(response)
             });
-
         // reset survey state
         setPassword('');
-        setLogin('');
+        setUsername('');
         setMainErr('');
-        if (login === '') {
-            setLoginErr('Логин не может быть пустым')
+        if (username === '') {
+            setUsernameErr('Логин не может быть пустым')
         }
     };
 
@@ -58,8 +62,8 @@ function LoginPage() {
         setPassword(event.target.value);
     };
 
-    const handleChangeLogin = (event) => {
-        setLogin(event.target.value);
+    const handleChangeUsername = (event) => {
+        setUsername(event.target.value);
     };
     return jwt?(
         <Navigate to="/"/>
@@ -67,7 +71,6 @@ function LoginPage() {
         <div>
             <div className="login-wrapper">
                 <form className="login-form" onSubmit={handleMainSubmit}>
-                    Djkfr2233
                     <div className="title-form"> Добро пожаловать!</div>
                     <div className="subtitle-form">Чтобы продолжить работу, пожалуйста, авторизуйтесь.</div>
                     <label className="label-form">
@@ -75,9 +78,9 @@ function LoginPage() {
                         <input type="text"
                                className="input-form"
                                placeholder="Введите логин..."
-                               value={login}
-                               onChange={handleChangeLogin}/>
-                        {(login < 1) ? <div className="alert-form">{loginErr}</div> : null}
+                               value={username}
+                               onChange={handleChangeUsername}/>
+                        {(username < 1) ? <div className="alert-form">{usernameErr}</div> : null}
                     </label>
                     <label className="label-form">
                         Пароль:
@@ -87,8 +90,8 @@ function LoginPage() {
                                value={password}
                                onChange={handleChangePassword}/>
                     </label>
-                    <button className="form-button" type="submit" disabled={ password.length < 6 }> Войти </button>
-                    {(login < 1 && password < 1) ? <div className="alert-form" style={{marginTop:"10px"}}>{mainErr}</div> : null}
+                    <button className="form-button" type="submit" disabled={ password.length < 5 }> Войти </button>
+                    {(username < 1 && password < 1) ? <div className="alert-form" style={{marginTop:"10px"}}>{mainErr}</div> : null}
                 </form>
             </div>
         </div>

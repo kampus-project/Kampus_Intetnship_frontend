@@ -1,5 +1,6 @@
 import './Modal.css';
 import {useEffect} from "react";
+import {useLocalState} from "../../Modules/useLocalStorage/index.js";
 // eslint-disable-next-line react/prop-types
 const Modal = ({ open, onClose,onSubmit, title, description, subtitle,specialization,internshipSchedule, internshipType }) => {
 
@@ -19,6 +20,8 @@ const Modal = ({ open, onClose,onSubmit, title, description, subtitle,specializa
         };
     }, [open]);
 
+    const [role,setRole] = useLocalState('','role')
+
     return (
         <div className={`modal ${open ? 'open' : ''}`}>
             <div className="modal-content">
@@ -32,7 +35,7 @@ const Modal = ({ open, onClose,onSubmit, title, description, subtitle,specializa
                 <p className="params"><span>Вид стажировки:</span> {internshipType}</p>
                     <div className="modal-buttons">
                     <button style={{backgroundColor:"#000000", color:"white"}} onClick={onClose}>Закрыть</button>
-                    <button style={{backgroundColor:"#F52D30", color:"white"}} onClick={onSubmit}>Откликнуться</button>
+                    <button onClick={onSubmit} disabled={role === 'HR' ? true : false}>Откликнуться</button>
                 </div>
             </div>
         </div>

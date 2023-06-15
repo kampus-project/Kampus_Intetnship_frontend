@@ -1,26 +1,32 @@
 import './MainPage.css';
 import Header from "../../Components/Header/index.jsx";
 import Card from "../../Components/Card/index.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Pagination from '@mui/material/Pagination';
 import Modal from "../../Components/ModalWindow/index.jsx";
+import {useLocalState} from "../../Modules/useLocalStorage/index.js";
 
 function MainPage() {
 
-    const cardData = [
-        { id: 1, title: 'Вакансия стажировки',subtitle: 'Название компании', shortDescription: 'Краткое описание вакансии (1 предложение)',description: 'Основная информация о вакансии, чем предстоит заниматься, какой стек технологий, обязанности и т.д.', specialization: 'Наука и образование', internshipSchedule:'Полный рабочий день',internshipType:'Удаленная работа'},
-        { id: 2, title: 'Вакансия стажировки',subtitle: 'Название компании', shortDescription: 'Краткое описание вакансии (1 предложение)',description: 'Основная информация о вакансии, чем предстоит заниматься, какой стек технологий, обязанности и т.д.', specialization: 'Рабочий персонал', internshipSchedule:'Временная подработка',internshipType:'Работа в офисе'},
-        { id: 3, title: 'Вакансия стажировки',subtitle: 'Название компании', shortDescription: 'Краткое описание вакансии (1 предложение)',description: 'Основная информация о вакансии, чем предстоит заниматься, какой стек технологий, обязанности и т.д.', specialization: 'Финансы и бухгалтерия', internshipSchedule:'Полный рабочий день',internshipType:'Удаленная работа'},
-        { id: 4, title: 'Вакансия стажировки',subtitle: 'Название компании', shortDescription: 'Краткое описание вакансии (1 предложение)',description: 'Основная информация о вакансии, чем предстоит заниматься, какой стек технологий, обязанности и т.д.', specialization: 'Наука и образование', internshipSchedule:'Временная подработка',internshipType:'Работа в офисе'},
-        { id: 5, title: 'Вакансия стажировки',subtitle: 'Название компании', shortDescription: 'Краткое описание вакансии (1 предложение)',description: 'Основная информация о вакансии, чем предстоит заниматься, какой стек технологий, обязанности и т.д.', specialization: 'Рабочий персонал', internshipSchedule:'Временная подработка',internshipType:'Удаленная работа'},
-        { id: 6, title: 'Вакансия стажировки',subtitle: 'Название компании', shortDescription: 'Краткое описание вакансии (1 предложение)',description: 'Основная информация о вакансии, чем предстоит заниматься, какой стек технологий, обязанности и т.д.', specialization: 'Наука и образование', internshipSchedule:'Полный рабочий день',internshipType:'Работа в офисе'},
-        { id: 7, title: 'Вакансия стажировки',subtitle: 'Название компании', shortDescription: 'Краткое описание вакансии (1 предложение)',description: 'Основная информация о вакансии, чем предстоит заниматься, какой стек технологий, обязанности и т.д.', specialization: 'Рабочий персонал', internshipSchedule:'Временная подработка',internshipType:'Работа в офисе'},
-        { id: 8, title: 'Вакансия стажировки',subtitle: 'Название компании', shortDescription: 'Краткое описание вакансии (1 предложение)',description: 'Основная информация о вакансии, чем предстоит заниматься, какой стек технологий, обязанности и т.д.', specialization: 'Рабочий персонал', internshipSchedule:'Неполный рабочий день',internshipType:'Удаленная работа'},
-        { id: 9, title: 'Вакансия стажировки',subtitle: 'Название компании', shortDescription: 'Краткое описание вакансии (1 предложение)',description: 'Основная информация о вакансии, чем предстоит заниматься, какой стек технологий, обязанности и т.д.', specialization: 'Наука и образование', internshipSchedule:'Неполный рабочий день',internshipType:'Работа в офисе'},
-        { id: 10, title: 'Вакансия стажировки',subtitle: 'Название компании', shortDescription: 'Краткое описание вакансии (1 предложение)',description: 'Основная информация о вакансии, чем предстоит заниматься, какой стек технологий, обязанности и т.д.', specialization: 'Финансы и бухгалтерия', internshipSchedule:'Полный рабочий день',internshipType:'Работа в офисе'},
-        { id: 11, title: 'Вакансия стажировки',subtitle: 'Название компании', shortDescription: 'Краткое описание вакансии (1 предложение)',description: 'Основная информация о вакансии, чем предстоит заниматься, какой стек технологий, обязанности и т.д.', specialization: 'Финансы и бухгалтерия', internshipSchedule:'Неполный рабочий день',internshipType:'Удаленная работа'},
-        { id: 12, title: 'Вакансия стажировки',subtitle: 'Название компании', shortDescription: 'Краткое описание вакансии (1 предложение)',description: 'Основная информация о вакансии, чем предстоит заниматься, какой стек технологий, обязанности и т.д.', specialization: 'Финансы и бухгалтерия', internshipSchedule:'Неполный рабочий день',internshipType:'Работа в офисе'},
-    ];
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const [cardData,setCardData] = useState([]);
+    const [jwt, setJwt] = useLocalState('', 'jwt')
+    const [username,setUsername] = useLocalState('','username')
+
+
+    useEffect(() => {
+        fetch(`${backendUrl}/api/v1/internship/getAllInternships`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization" : 'Bearer ' + jwt,
+            },
+            method: "get",
+        })
+            .then((response) => response.json())
+            .then((data) => setCardData(data))
+            .catch(error => console.error(error));
+    }, [])
+    console.log(cardData)
 
     const cardsPerPage = 5; // Количество карточек на странице
     const [currentPage, setCurrentPage] = useState(1); // Текущая страница
@@ -93,6 +99,32 @@ function MainPage() {
         setSelectedCard(null);
     };
 
+    const handleSubmitInternship = () => {
+
+        const submitInternship = {
+            internshipID:selectedCard.id,
+            studentUsername:username,
+        };
+        console.log(submitInternship);
+
+        fetch(`${backendUrl}/api/v1/internship/replyInternship`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization" : 'Bearer ' + jwt,
+            },
+            method: "post",
+            body: JSON.stringify(submitInternship)
+        })
+            .then((response) => {
+                if (response.status === 200) {
+                    console.log("OK");
+                } else {
+                    console.log("лох")
+                }
+            })
+        setSelectedCard(null);
+    };
+
     let content;
     if (filteredCards.length === 0) {
         content = <p style={{fontSize:'20px'}}>По вашему запросу ничего не найдено</p>;
@@ -101,9 +133,9 @@ function MainPage() {
             <div className="card-list">
                 {currentCards.map((card) => (
                     <Card key={card.id}
-                          title={card.title}
-                          shortDescription={card.shortDescription}
-                          subtitle={card.subtitle}
+                          title={card.internshipTitle}
+                          shortDescription={card.internshipShortDescription}
+                          subtitle={card.organizationName}
                           onClick={() => handleCardClick(card)}/>
                 ))}
             </div>
@@ -217,12 +249,13 @@ function MainPage() {
                 <Modal
                     open={Boolean(selectedCard)}
                     onClose={handleModalClose}
-                    title={selectedCard.title}
-                    subtitle={selectedCard.subtitle}
-                    description={selectedCard.description}
-                    specialization={selectedCard.specialization}
+                    title={selectedCard.internshipTitle}
+                    subtitle={selectedCard.organizationName}
+                    description={selectedCard.internshipDescription}
+                    specialization={selectedCard.internshipSpecialization}
                     internshipSchedule={selectedCard.internshipSchedule}
                     internshipType={selectedCard.internshipType}
+                    onSubmit={handleSubmitInternship}
                     // Дополнительная информация о карточке
                     // ...
                 />

@@ -80,5 +80,13 @@ body.modal-open {
     font-family: 'Inter', sans-serif;
     font-size: 14px;
     cursor: pointer;
+    background-color: #F52D30;
+    color: white;
+}
+
+.modal button:disabled{
+    background-color: #767676;
+    color: black;
+    cursor: not-allowed;
 }
 
